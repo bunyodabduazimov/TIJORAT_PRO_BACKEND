@@ -41,11 +41,12 @@ class AuthController extends Controller
 
         /** @var \App\Models\User $user */
         $user = User::create([
+            'company_id' => 1,
+            'filial_id'  => 1,
             'name'      => $data['name'],
             'email'     => $data['email'],
             'password'  => Hash::make($data['password']),
             'role'      => 'client',    // роль клиента
-            'tenant_id' => null,        // здесь можешь подставить свой tenant_id
         ]);
 
         // Сразу логиним нового пользователя
