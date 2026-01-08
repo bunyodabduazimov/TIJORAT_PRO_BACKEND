@@ -17,6 +17,7 @@ class User extends Authenticatable
         'password',
         'company_id',
         'filial_id',
+        'active',
         'role'
     ];
 

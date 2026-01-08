@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('password');
 
             $table->string('role')->default('agent');
-
+            $table->boolean('active')->default(true);
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes(); 

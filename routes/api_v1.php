@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\DashboardController;
 use App\Http\Controllers\Api\V1\ProductController;
+use App\Http\Controllers\Api\V1\ReferenceController;
+
 
 // Публичные роуты v1
 Route::post('/login', [AuthController::class, 'login'])->name('login');
@@ -27,4 +29,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/products/{product}', [ProductController::class, 'update']);
     Route::delete('/products/{product}', [ProductController::class, 'destroy']);
     Route::post('/products/delete-many', [ProductController::class, 'deleteMany']);
+
+    Route::get('/references', [ReferenceController::class,'index']);
+    Route::post('/references', [ReferenceController::class,'store']);
+    Route::put('/references/{id}', [ReferenceController::class,'update']);
+    Route::delete('/references/{id}', [ReferenceController::class,'destroy']);
+
 });

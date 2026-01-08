@@ -5,10 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Traits\CompanyScope;
 
 class Product extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, CompanyScope;
 
     protected $fillable = [
         'company_id',
@@ -16,20 +17,20 @@ class Product extends Model
         'group_id','unit_id','brand_id',
         'min_quantity','package','term','whole',
         'image','status','view','description','type'
-    ];
+    ];  
 
     public function group()
     {
-        return $this->belongsTo(Group::class);
+        return $this->belongsTo(Reference::class);
     }
 
     public function unit()
     {
-        return $this->belongsTo(Unit::class);
+        return $this->belongsTo(Reference::class);
     }
 
     public function brand()
     {
-        return $this->belongsTo(Brand::class);
+        return $this->belongsTo(Reference::class);
     }
 }

@@ -1,79 +1,50 @@
 <?php
+
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
-use App\Models\Product;
 use Illuminate\Http\Request;
+use App\Models\Product;
 
 class ProductController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $r)
     {
-        return response()->json(
-            Product::latest()->paginate(10)
-        );
+        return Product::with(['group','brand','unit'])
+            ->when($r->search, fn($q)=>
+                $q->where('name','like',"%$r->search%")
+                   ->orWhere('barcode','like',"%$r->search%")
+                   ->orWhere('sku','like',"%$r->search%")
+            )
+            ->latest()
+            ->paginate($r->rows ?? 10);
     }
 
-    public function store(Request $request)
+    public function store(Request $r)
     {
-        $data = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'price' => 'required|numeric',
-            'quantity' => 'required|integer',
-            'image' => 'nullable|string'
-        ]);
-
-        $product = Product::create($data);
-
-        return response()->json([
-            'message' => 'Product created',
-            'data' => $product
-        ], 201);
+        return Product::create($r->all());
     }
 
     public function show(Product $product)
     {
-        return response()->json($product);
+        return $product->load(['group','brand','unit']);
     }
 
-    public function update(Request $request, Product $product)
+    public function update(Request $r, Product $product)
     {
-        $data = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'price' => 'required|numeric',
-            'quantity' => 'required|integer',
-            'image' => 'nullable|string'
-        ]);
-
-        $product->update($data);
-
-        return response()->json([
-            'message' => 'Product updated',
-            'data' => $product
-        ]);
+        $product->update($r->all());
+        return $product;
     }
 
     public function destroy(Product $product)
     {
         $product->delete();
-
-        return response()->json([
-            'message' => 'Product deleted'
-        ]);
+        return response()->noContent();
     }
 
-    public function deleteMany(Request $request)
+    public function deleteMany(Request $r)
     {
-        $request->validate([
-            'ids' => 'required|array'
-        ]);
-
-        Product::whereIn('id', $request->ids)->delete();
-
-        return response()->json([
-            'message' => 'Products deleted'
-        ]);
+        Product::whereIn('id',$r->ids)->delete();
+        return response()->noContent();
     }
 }

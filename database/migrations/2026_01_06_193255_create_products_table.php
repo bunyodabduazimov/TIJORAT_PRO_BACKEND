@@ -17,10 +17,9 @@ return new class extends Migration {
             $table->string('barcode')->nullable();
             $table->string('sku')->nullable();
 
-            $table->foreignId('group_id')->nullable()->constrained()->nullOnDelete();
-            $table->foreignId('unit_id')->nullable()->constrained()->nullOnDelete();
-            $table->foreignId('brand_id')->nullable()->constrained()->nullOnDelete();
-
+            $table->foreignId('group_id')->nullable()->constrained('references')->nullOnDelete();
+            $table->foreignId('unit_id')->nullable()->constrained('references')->nullOnDelete();
+            $table->foreignId('brand_id')->nullable()->constrained('references')->nullOnDelete();
 
             $table->integer('min_quantity')->default(0);
             $table->string('package')->nullable();

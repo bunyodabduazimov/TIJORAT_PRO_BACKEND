@@ -19,16 +19,5 @@ class ProductSeeder extends Seeder
             'company_id' => 1,
             'type' => 'service'
         ]);
-
-        // 🏢 Компания 2 (если есть)
-        Product::factory()->count(2000)->create([
-            'company_id' => 2,
-            'type' => 'product'
-        ]);
-
-        Product::factory()->count(5000)->create([
-            'company_id' => 2,
-            'type' => 'service'
-        ]);
     }
 }
